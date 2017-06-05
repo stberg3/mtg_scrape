@@ -1,0 +1,7 @@
+creature_regex: (?:\b([\s\w]+)\s—\s([^—]+)\s(?:(\d+)\/(\d+)),([^,]+)\s\((\d+)\))
+planeswalker_regex: (\w+)\s—([\s\w]+)\s\(Loyalty:\s(\d+)\),([^,]+)\s\((\d+)\)
+spell_regex: ([\s\w]+),([^,]+)\s\((\d+)\)
+land_regex: (Land)(?:\s—\s([\w\s]+)\n)?
+
+name_xpath: //td/span/a/text()
+costetc_xpath: //td/span/following-sibling::p[1]/text()
