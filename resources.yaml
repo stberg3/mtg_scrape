@@ -4,4 +4,10 @@ spell_regex: ([\s\w]+),([^,]+)\s\((\d+)\)
 land_regex: (Land)(?:\s—\s([\w\s]+)\n)?
 
 name_xpath: //td/span/a/text()
+link_xpath: //td/span/a/@href
 costetc_xpath: //td/span/following-sibling::p[1]/text()
+editions_xpath:
+  //u[2]/following-sibling::img[@alt='English']/following-sibling::a[1]/@href
+
+# WE'VE CRACKED IT, JOHNNIE!!!
+sitemap_url: http://magiccards.info/sitemap.html
