@@ -1,3 +1,6 @@
+imagebase_url_xpath: http://magiccards.info/scans/
+card_url_xpath:      td[2]/a/@href
+
 creature_regex: (?:\b([\s\w]+)\s—\s([^—]+)\s(?:(\d+)\/(\d+)),([^,]+)\s\((\d+)\))
 planeswalker_regex: (\w+)\s—([\s\w]+)\s\(Loyalty:\s(\d+)\),([^,]+)\s\((\d+)\)
 spell_regex: ([\s\w]+),([^,]+)\s\((\d+)\)
@@ -8,7 +11,7 @@ link_xpath: //td/span/a/@href
 costetc_xpath: //td/span/following-sibling::p[1]/text()
 editions_xpath:
   //u[2]/following-sibling::img[@alt='English']/following-sibling::a[1]/@href
-
+row_xpath: //tr[@class="odd"]|//tr[@class="even"]
 
 
 # WE'VE CRACKED IT, JOHNNIE!!!
