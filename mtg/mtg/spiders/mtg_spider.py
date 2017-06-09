@@ -7,8 +7,6 @@ card_base_url = "http://magiccards.info"
 
 resources = yaml.load(open("resources.yaml", "r"))
 
-
-
 class QuotesSpider(scrapy.Spider):
     name = "mtg"
 
@@ -17,9 +15,12 @@ class QuotesSpider(scrapy.Spider):
     def parse(self, response):
         log = open("log.log", "w")
 
+        self.log(response.url)
         entry = {}
+        rows = response.xpath(resources["row_xpath"])
+        self.log("\n***Found {} rows***".format(len(rows)))
 
-        for row in response.xpath(resources["row_xpath"]):
+        for row in rows:
             i = 0
             try:
                 table_data = row.xpath("./td/text()")
@@ -61,6 +62,7 @@ class QuotesSpider(scrapy.Spider):
                 entry['card_url'] = card_base_url + \
                                     row.xpath("./td[2]/a/@href").extract_first()
 
+                self.log("found: {}".format(entry['name']))
 
             except IndexError as ie:
                 log.write("\n\nERROR:"+ response.url +
@@ -70,6 +72,6 @@ class QuotesSpider(scrapy.Spider):
                     log.write("\n\t"+ "td[{}]".format(i) + datum)
                     i += 1
 
+            yield entry
+            # end for-each loop
         log.close()
-
-        yield entry
