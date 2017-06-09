@@ -15,6 +15,7 @@ class QuotesSpider(scrapy.Spider):
     def parse(self, response):
         log = open("log.log", "w")
 
+        self.log(response.url)
         entry = {}
         rows = response.xpath(resources["row_xpath"])
 
