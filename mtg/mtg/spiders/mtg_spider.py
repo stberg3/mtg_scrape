@@ -7,7 +7,7 @@ card_base_url = "http://magiccards.info"
 
 resources = yaml.load(open("resources.yaml", "r"))
 
-class QuotesSpider(scrapy.Spider):
+class MtgSpider(scrapy.Spider):
     name = "mtg"
 
     start_urls = yaml.load(open("set_urls.yaml", "r"))
