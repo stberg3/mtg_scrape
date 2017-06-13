@@ -8,6 +8,6 @@
 import scrapy
 
 class MtgImage(scrapy.Item):
-    name = scrapy.Field()
+    image_data = scrapy.Field()
     image_url = scrapy.Field()
     image_path = scrapy.Field()

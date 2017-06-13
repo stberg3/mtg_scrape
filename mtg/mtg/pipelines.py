@@ -12,7 +12,7 @@ from mtg.items import MtgImage
 
 class MtgPipeline(object):
 
-    collection_name = "mtg_images"
+    collection_name = "mtg_cards"
     image_path = "images/"
 
     def __init__(self, mongo_uri, mongo_db):
@@ -37,7 +37,9 @@ class MtgPipeline(object):
 
     def open_spider(self, spider):
         with open("pipeline.log", "a") as f:
-            f.write("spider opened...\n")
+            f.write("spider opened...:\n\t{0}\n\t{1}\n".format(
+            self.mongo_uri, self.mongo_db
+            ))
 
         self.client = pymongo.MongoClient(self.mongo_uri)
         self.db = self.client[self.mongo_db]
@@ -58,13 +60,23 @@ class MtgPipeline(object):
         file_name = "{}.jpg".format(url_hash)
 
         with open((self.image_path+file_name), "wb") as file:
-            file.write(response.body)
+            file.write(item["image_data"])
 
-        item.image_path = file_name
+        item["image_path"] = file_name
 
-        self.client[db_name][collection_name].update_one(
-            {"image_url" : item.image_url},
-            {"image_path": item.image_path}
+        with open("pipeline.log", "a") as f:
+            f.write("DB access:\n"+item["image_url"]+"\n")
+
+            f.write("access?:\n\t{}\n".format(
+                str(self.db[self.collection_name].find_one({"name":"Mountain"}))))
+
+            f.write("modifying:\n\t{}\n".format(
+                self.db[self.collection_name].find_one(
+                    {"image_url":item["image_url"]})))
+
+        self.db[self.collection_name].find_and_modify(
+            query={"image_url" : item["image_url"]},
+            update={"$set":{"image_path": item["image_path"]}}
         )
 
         return item
