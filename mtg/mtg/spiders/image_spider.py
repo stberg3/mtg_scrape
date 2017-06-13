@@ -1,6 +1,7 @@
 import scrapy
 import pymongo
 from mtg.items import MtgImage
+from scrapy.loader import ItemLoader
 
 class ImageSpider(scrapy.Spider):
     name = "images"
@@ -18,4 +19,7 @@ class ImageSpider(scrapy.Spider):
             yield scrapy.Request(url, callback=self.parse)
 
     def parse(self, response):
-        pass
+        self.log("Yielding: " + str(response.url))
+        item =  MtgImage(image_url=response.url)
+        # item['image_url'] = response.url
+        yield item

@@ -25,6 +25,10 @@ class MtgPipeline(object):
     def from_crawler(cls, crawler):
         with open("pipeline.log", "w") as f:
             f.write("from_crawler called...\n")
+            f.write("DB Info:\n\tURI:\t{0}\n\tDB:\t{1}\n".format(
+                crawler.settings.get('MONGO_URI'),
+                crawler.settings.get('MONGO_DATABASE', 'items')
+            ))
 
         return cls(
             mongo_uri=crawler.settings.get('MONGO_URI'),
