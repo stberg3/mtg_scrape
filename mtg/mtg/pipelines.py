@@ -46,14 +46,14 @@ class MtgPipeline(object):
 
 
     def close_spider(self, spider):
-        with open("pipeline.log", "a") as f:
-            f.write("spider closed...\n")
+        # with open("pipeline.log", "a") as f:
+        #     f.write("spider closed...\n")
 
         self.client.close()
 
     def process_item(self, item, spider):
-        with open("pipeline.log", "a") as f:
-            f.write("pipeline processing...\n")
+        # with open("pipeline.log", "a") as f:
+        #     f.write("pipeline processing...\n")
 
         url = item["image_url"]
         url_hash =  hashlib.md5(url.encode("utf8")).hexdigest()
@@ -64,15 +64,15 @@ class MtgPipeline(object):
 
         item["image_path"] = file_name
 
-        with open("pipeline.log", "a") as f:
-            f.write("DB access:\n"+item["image_url"]+"\n")
-
-            f.write("access?:\n\t{}\n".format(
-                str(self.db[self.collection_name].find_one({"name":"Mountain"}))))
-
-            f.write("modifying:\n\t{}\n".format(
-                self.db[self.collection_name].find_one(
-                    {"image_url":item["image_url"]})))
+        # with open("pipeline.log", "a") as f:
+        #     f.write("DB access:\n"+item["image_url"]+"\n")
+        #
+        #     f.write("access?:\n\t{}\n".format(
+        #         str(self.db[self.collection_name].find_one({"name":"Mountain"}))))
+        #
+        #     f.write("modifying:\n\t{}\n".format(
+        #         self.db[self.collection_name].find_one(
+        #             {"image_url":item["image_url"]})))
 
         self.db[self.collection_name].find_and_modify(
             query={"image_url" : item["image_url"]},
