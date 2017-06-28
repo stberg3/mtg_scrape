@@ -66,6 +66,7 @@ ROBOTSTXT_OBEY = True
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
   'mtg.pipelines.MtgPipeline': 1,
+  # 'scrapy.pipelines.images.ImagesPipeline': 2,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -89,6 +90,7 @@ ITEM_PIPELINES = {
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
-FILES_STORE = '/home/sam/mtg_scrape/mtg/mtg/images'
+IMAGES_STORE = r'C:\Users\Khoi\mtg_scrape\mtg\mtg\images'
 MONGO_DATABASE = 'mtg_database'
 MONGO_URI = 'localhost'
+IMAGES_RESULT_FIELD = 'image_urls'

@@ -10,7 +10,7 @@ resources = yaml.load(open("resources.yaml", "r"))
 class MtgSpider(scrapy.Spider):
     name = "mtg"
 
-    start_urls = yaml.load(open("set_urls.yaml", "r"))
+    start_urls = yaml.load(open("set_urls.yaml", "r"))[0]
 
     def parse(self, response):
         log = open("log.log", "w")
@@ -39,8 +39,8 @@ class MtgSpider(scrapy.Spider):
                 image_suffix = "{}/{}/{}".format(
                     lang_url_part, set_url_part, card_url_part)
 
-                entry["image_url"] = 'http://magiccards.info/scans/' + \
-                                     image_suffix + ".jpg"
+                entry["image_urls"] = ['http://magiccards.info/scans/' + \
+                                     image_suffix + ".jpg"]
 
                 entry['type'] = row.xpath("./td/text()")[1].extract()
 
