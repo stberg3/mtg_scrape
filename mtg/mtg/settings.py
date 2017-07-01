@@ -65,6 +65,7 @@ ROBOTSTXT_OBEY = True
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
+  # 'mtg.pipelines.MetadataPipeline': 1,
   'mtg.pipelines.MtgPipeline': 1,
   # 'scrapy.pipelines.images.ImagesPipeline': 2,
 }

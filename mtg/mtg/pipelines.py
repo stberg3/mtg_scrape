@@ -9,6 +9,7 @@ import pymongo
 import hashlib
 # from settings import MONGO_URI, MONGO_DB
 from mtg.items import MtgImage
+from time import asctime, localtime
 
 class MetadataPipeline(object):
     collection_name = "mtg_cards"
@@ -95,7 +96,8 @@ class MtgPipeline(object):
 
     @classmethod
     def from_crawler(cls, crawler):
-        with open("pipeline.log", "w") as f:
+        with open("pipeline.log", "a") as f:
+            f.write("\nPIPELINE STARTED: {}\n".format(asctime(localtime())))
             f.write("from_crawler called...\n")
             f.write("DB Info:\n\tURI:\t{0}\n\tDB:\t{1}\n".format(
                 crawler.settings.get('MONGO_URI'),
@@ -136,15 +138,7 @@ class MtgPipeline(object):
 
         item["image_path"] = file_name
 
-        # with open("pipeline.log", "a") as f:
-        #     f.write("DB access:\n"+item["image_url"]+"\n")
-        #
-        #     f.write("access?:\n\t{}\n".format(
-        #         str(self.db[self.collection_name].find_one({"name":"Mountain"}))))
-        #
-        #     f.write("modifying:\n\t{}\n".format(
-        #         self.db[self.collection_name].find_one(
-        #             {"image_url":item["image_urls"][0]})))
+        self.db[self.collection_name].insert_one(dict(item))
 
         self.db[self.collection_name].find_and_modify(
             query={"image_url" : item["image_urls"][0]},

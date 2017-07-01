@@ -10,7 +10,7 @@ resources = yaml.load(open("resources.yaml", "r"))
 class MtgSpider(scrapy.Spider):
     name = "mtg"
 
-    start_urls = yaml.load(open("set_urls.yaml", "r"))[0]
+    start_urls = yaml.load(open("set_urls.yaml", "r"))
 
     def parse(self, response):
         log = open("log.log", "w")
@@ -19,6 +19,7 @@ class MtgSpider(scrapy.Spider):
         entry = {}
         rows = response.xpath(resources["row_xpath"])
 
+        # for row in rows:
         for row in rows:
             i = 0
             try:
