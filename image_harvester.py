@@ -39,7 +39,13 @@ img_urls = [elem.get_attribute("src") for elem in
 
 for url in img_urls:
     if url != None:
-        urllib.request.urlretrieve(url, filename = str(store_directory+"/"+
-                                               (sha1(url.encode("utf8")).hexdigest())+
-                                               ".jpg"))
+        fname = str(store_directory+"/"+(sha1(url.encode("utf8")).hexdigest())+
+                                               ".jpg")
+        tmp_name = urllib.request.urlretrieve(url)[0]
+        im = Image.open(tmp_name)
+        try:
+            im.save(fname, "JPEG")
+        except OSError:
+            pass
+            
 driver.close()
