@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import ElementNotInteractableException
 
+import threading
 from PIL import Image
 from hashlib import sha1
 import urllib, os, sys, html, time
@@ -37,15 +38,49 @@ for i in range(2):
 img_urls = [elem.get_attribute("src") for elem in
                 driver.find_elements_by_css_selector("img.rg_ic")]
 
-for url in img_urls:
-    if url != None:
-        fname = str(store_directory+"/"+(sha1(url.encode("utf8")).hexdigest())+
+class DownloadThread(threading.Thread):
+    def __init__(self, url, store_directory):
+        threading.Thread.__init__(self)
+        self.url = url
+        self.store_directory = store_directory
+        # print("\tThread initialized:", self.url[-20:])
+
+    def run(self):
+        fname = str(self.store_directory+"/"+(sha1(self.url.encode("utf8")).hexdigest())+
                                                ".jpg")
-        tmp_name = urllib.request.urlretrieve(url)[0]
+        tmp_name = urllib.request.urlretrieve(self.url)[0]
         im = Image.open(tmp_name)
+        # print("\tThread started:", self.url[-20:])
+
+
         try:
             im.save(fname, "JPEG")
         except OSError:
             pass
-            
+
+threads = []
+with open("threading.log", "w") as file:
+    file.write("Starting... ")
+
+for url in img_urls:
+    if url != None:
+        with open("threading.log", "a") as file:
+            file.write(("\nDownloading: "+ url[-20:]))
+
+        threads.append(DownloadThread(url, store_directory))
+        # print("nThreads = ", len(threads))
+        if len(threads)>10:
+            # print("iterating...")
+            for thread in threads:
+                thread.start()
+            for thread in threads:
+                thread.join()
+            threads = []
+
+for thread in threads:
+    thread.start()
+
+for thread in threads:
+    thread.join()
+
 driver.close()
