@@ -43,15 +43,12 @@ class DownloadThread(threading.Thread):
         threading.Thread.__init__(self)
         self.url = url
         self.store_directory = store_directory
-        # print("\tThread initialized:", self.url[-20:])
 
     def run(self):
         fname = str(self.store_directory+"/"+(sha1(self.url.encode("utf8")).hexdigest())+
                                                ".jpg")
         tmp_name = urllib.request.urlretrieve(self.url)[0]
         im = Image.open(tmp_name)
-        # print("\tThread started:", self.url[-20:])
-
 
         try:
             im.save(fname, "JPEG")
@@ -68,19 +65,8 @@ for url in img_urls:
             file.write(("\nDownloading: "+ url[-20:]))
 
         threads.append(DownloadThread(url, store_directory))
-        # print("nThreads = ", len(threads))
-        if len(threads)>10:
-            # print("iterating...")
-            for thread in threads:
-                thread.start()
-            for thread in threads:
-                thread.join()
-            threads = []
 
 for thread in threads:
     thread.start()
-
-for thread in threads:
-    thread.join()
 
 driver.close()
