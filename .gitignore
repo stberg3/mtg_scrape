@@ -1,3 +1,4 @@
 *.log
 *.pyc
 mtg/mtg/images/
+.ipynb_checkpoints/
